@@ -9,8 +9,22 @@ export async function generateMetadata({
     const { text } = params;
     const reversed = decodeURIComponent(text).split('').reverse().join('');
 
+    const ogParams = new URLSearchParams();
+    ogParams.set('title', reversed);
+
     return {
         title: reversed,
+        openGraph: {
+            title: reversed,
+            type: 'profile',
+            url: `/${encodeURIComponent(reversed)}`,
+            images: [
+                {
+                    url: `/api/og?${ogParams.toString()}`,
+                    alt: reversed,
+                },
+            ],
+        },
     };
 }
 
