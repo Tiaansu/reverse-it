@@ -8,9 +8,13 @@ export async function GET(request: NextRequest) {
         const { searchParams } = request.nextUrl;
 
         const hasTitle = searchParams.has('title');
-        const title = hasTitle
-            ? searchParams.get('title')?.slice(0, 64)
+        let title = hasTitle
+            ? searchParams.get('title')?.slice(0, 64)!
             : 'No Title to reverse 😔';
+
+        if (hasTitle) {
+            title = decodeURIComponent(title).split('').reverse().join('');
+        }
 
         return new ImageResponse(
             (
